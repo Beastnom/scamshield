@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "ScamShield AI",
+    "slug": "scamshield-ai",
+    "version": "0.2.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "android": {"package": "com.cybersentinels.scamshield", "permissions": []},
+    "extra": {"apiBaseUrl": "http://10.0.2.2:8787"}
+  }
+}

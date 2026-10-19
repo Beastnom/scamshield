@@ -1,0 +1,225 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>ScamShield AI</title>
+<style>
+:root{--bg:#070b1a;--s:#0d1328;--s2:#131b36;--b:#1f2a4d;--t:#e8ecf8;--m:#8d99bd;--c:#22d3ee;--bl:#3b82f6;--v:#8b5cf6;--r:#f87171;--a:#fbbf24;--g:#4ade80;--n:#9aa4bf;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root:not([data-theme=dark]){--bg:#f4f6fc;--s:#fff;--s2:#eef1fa;--b:#d5dbee;--t:#10162b;--m:#55607f}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#070b1a;--s:#0d1328;--s2:#131b36;--b:#1f2a4d;--t:#e8ecf8;--m:#8d99bd}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--c)}button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--c);outline-offset:2px}
+.app{display:flex;min-height:100vh}.side{width:240px;background:var(--s);border-right:1px solid var(--b);padding:18px 12px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:6px}
+.logo{display:flex;gap:10px;align-items:center;font-weight:700;padding:4px 8px 14px}.logo small{display:block;color:var(--m);font-weight:400;font-size:11px}
+.nav{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:10px;color:var(--m);text-decoration:none;border:0;background:none;text-align:left;cursor:pointer;width:100%}
+.nav:hover{background:var(--s2);color:var(--t)}.nav.on{background:linear-gradient(90deg,rgba(34,211,238,.15),rgba(139,92,246,.12));color:var(--t);box-shadow:inset 2px 0 var(--c)}
+main{flex:1;padding:28px;max-width:1040px;margin:0 auto;width:100%;min-width:0}
+.btn{background:linear-gradient(135deg,var(--bl),var(--v));border:0;color:#fff;padding:10px 18px;border-radius:10px;cursor:pointer;font-weight:600;transition:transform .15s,box-shadow .15s}
+.btn:hover{box-shadow:0 0 18px rgba(59,130,246,.45)}.btn:active{transform:scale(.97)}.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.ghost{background:var(--s2);border:1px solid var(--b);color:var(--t)}.btn.sm{padding:6px 12px;font-size:13px}
+.card{background:var(--s);border:1px solid var(--b);border-radius:14px;padding:18px;animation:in .4s both}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+h1{font-size:28px;margin:0 0 6px}h2{font-size:18px;margin:22px 0 10px}h3{margin:0 0 6px;font-size:15px}.mut{color:var(--m)}.sm{font-size:13px}
+textarea,input[type=text],input[type=search],select{width:100%;background:var(--s2);border:1px solid var(--b);border-radius:10px;padding:12px}textarea{min-height:170px;resize:vertical}
+.tabs{display:flex;gap:6px;margin-bottom:12px}.tab{padding:8px 14px;border-radius:999px;border:1px solid var(--b);background:none;cursor:pointer;color:var(--m)}.tab[aria-selected=true]{background:var(--s2);color:var(--t);border-color:var(--c)}
+.pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid}
+.High{color:var(--r);border-color:var(--r);background:rgba(248,113,113,.1)}.Medium{color:var(--a);border-color:var(--a);background:rgba(251,191,36,.1)}.Low{color:var(--g);border-color:var(--g);background:rgba(74,222,128,.1)}.Inconclusive{color:var(--n);border-color:var(--n)}
+.tag{font-size:11px;padding:2px 8px;border-radius:6px;background:rgba(139,92,246,.18);color:#c4b5fd;border:1px solid rgba(139,92,246,.4)}
+.note{border-left:3px solid var(--c);padding:8px 12px;background:var(--s2);border-radius:6px;font-size:13px;color:var(--m)}
+.scan{position:relative;overflow:hidden}.scan:after{content:"";position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--c),transparent);animation:sc 1.6s linear infinite}
+.tl{border-left:2px solid var(--b);margin-left:8px;padding-left:18px}.tl>div{position:relative;margin-bottom:14px}.tl>div:before{content:"";position:absolute;left:-25px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--b)}
+.tl .done:before{background:var(--g)}.tl .run:before{background:var(--c);animation:pu 1s infinite}
+.bar{height:8px;background:var(--s2);border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--c),var(--v));transition:width .5s}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.flow span.n{background:var(--s2);border:1px solid var(--b);border-radius:10px;padding:8px 12px}
+details{background:var(--s2);border-radius:10px;padding:10px 14px;margin:8px 0}summary{cursor:pointer;font-weight:600}
+.mob{display:none}footer{margin-top:36px;color:var(--m);font-size:12px;border-top:1px solid var(--b);padding-top:14px}
+@keyframes in{from{opacity:0;transform:translateY(8px)}}@keyframes sc{from{top:0}to{top:100%}}@keyframes pu{50%{box-shadow:0 0 0 6px rgba(34,211,238,.2)}}
+body.calm *,body.calm *:before,body.calm *:after{animation:none!important;transition:none!important}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+@media(max-width:800px){.side{position:fixed;bottom:0;left:0;right:0;top:auto;height:auto;width:100%;flex-direction:row;overflow-x:auto;padding:6px;z-index:5;padding-bottom:calc(6px + env(safe-area-inset-bottom,0px))}.side .logo,.side .newscan{display:none}.nav{flex-direction:column;gap:2px;font-size:11px;padding:6px 10px;white-space:nowrap;width:auto}.mob{display:flex;gap:10px;align-items:center;margin-bottom:12px}main{padding:16px 16px 90px}}
+</style></head><body>
+<div class="app"><nav class="side" aria-label="Main"></nav><main id="v" tabindex="-1"></main></div>
+<script>
+// ScamShield AI — deterministic rule-based investigation engine (no AI model, no network calls).
+// Shared by the browser UI and server.js. Never visits submitted URLs.
+(function (root) {
+  const LIMIT = 5000;
+  const SHORT = ['bit.ly','tinyurl.com','t.co','goo.gl','is.gd','cutt.ly','rb.gy','shorturl.at','ow.ly'];
+  const BAD_TLD = ['zip','top','xyz','click','work','support','loan','icu','buzz','tk'];
+  const BRANDS = {paypal:'paypal.com',amazon:'amazon.in',sbi:'sbi.co.in',hdfc:'hdfcbank.com',icici:'icicibank.com',paytm:'paytm.com',google:'google.com',microsoft:'microsoft.com',netflix:'netflix.com',irctc:'irctc.co.in',flipkart:'flipkart.com'};
+  const RULES = [
+    ['urgency', /\b(urgent(ly)?|immediately|within \d+ ?(hours?|hrs?|minutes?|mins?)|last chance|expires? (today|soon)|suspended|blocked|final notice)\b/i, 2, 'Urgency or pressure language'],
+    ['credential', /\b(otp|one[- ]time (password|code)|cvv|pin|password|passcode)\b/i, 3, 'Mentions OTP, PIN, password or CVV'],
+    ['payment', /\b(processing fee|registration fee|customs fee|delivery fee|pay (a )?fee|gift ?card|bitcoin|crypto|send money)\b/i, 2, 'Asks for a fee or unusual payment'],
+    ['prize', /\b(you (have )?won|lottery|prize|congratulations|claim your reward)\b/i, 2, 'Unexpected prize or reward'],
+    ['kyc', /\b(kyc|verify your account|account (will be )?(closed|suspended|blocked)|update your (pan|aadhaar|bank))\b/i, 2, 'Account-verification / KYC pressure'],
+    ['job', /\b(work from home|earn (rs\.?|₹)? ?\d+|selected for (the )?(job|internship)|part[- ]time job)\b/i, 1, 'Job or internship offer wording']
+  ];
+  const now = () => new Date().toISOString();
+  const urlRe = /\b((?:https?:\/\/|www\.)[^\s<>"')]+|[a-z0-9-]+(?:\.[a-z0-9-]+)*\.(?:com|in|net|org|xyz|top|click|zip|co|link|support)\/[^\s<>"')]*)/gi;
+
+  function validate(inputType, content) {
+    if (!['sms','email','url'].includes(inputType)) return 'Unsupported input type.';
+    const c = (content || '').trim();
+    if (!c) return 'Please enter something to investigate.';
+    if (c.length > LIMIT) return 'Input is too long (max ' + LIMIT + ' characters).';
+    if (inputType === 'url' && !parseUrl(c)) return 'That does not look like a valid URL.';
+    return null;
+  }
+  function parseUrl(raw) {
+    try {
+      const s = raw.trim();
+      if (/\s/.test(s)) return null;
+      const u = new URL(/^[a-z][a-z0-9+.-]*:\/\//i.test(s) ? s : 'https://' + s);
+      if (!['http:','https:'].includes(u.protocol) || !u.hostname.includes('.')) return null;
+      return u;
+    } catch (e) { return null; }
+  }
+  function triage(inputType, content) {
+    const findings = [];
+    RULES.forEach(([id, re, pts, label]) => {
+      const m = content.match(re);
+      if (m) findings.push({ id, label, points: pts, kind: 'observation', evidence: 'Matched text: "' + m[0] + '"' });
+    });
+    const urls = inputType === 'url' ? [content.trim()] : [...new Set(content.match(urlRe) || [])].slice(0, 5);
+    return { findings, urls, words: content.trim().split(/\s+/).length };
+  }
+  function checkUrl(raw) {
+    const u = parseUrl(raw), out = [];
+    if (!u) return { url: raw, valid: false, flags: [] };
+    const h = u.hostname.toLowerCase(), parts = h.split('.'), tld = parts[parts.length - 1];
+    const add = (id, label, points, evidence) => out.push({ id, label, points, kind: 'observation', evidence });
+    if (SHORT.includes(h)) add('shortener', 'Shortened link hides the real destination', 2, 'Host is ' + h);
+    if (/^\d{1,3}(\.\d{1,3}){3}$/.test(h)) add('ip-host', 'Link uses a raw IP address', 3, 'Host is ' + h);
+    if (h.includes('xn--')) add('punycode', 'Domain uses punycode (possible look-alike characters)', 2, 'Host is ' + h);
+    if (raw.includes('@') && /^[a-z]+:\/\/[^/]*@/i.test(raw)) add('userinfo', 'Link contains "@" before the host', 3, 'Real host is ' + h);
+    if (parts.length > 4) add('subdomains', 'Unusually many subdomains', 1, parts.length + ' labels in ' + h);
+    if (BAD_TLD.includes(tld)) add('tld', 'Top-level domain often used in throwaway links', 1, '.' + tld);
+    if (u.protocol === 'http:') add('http', 'Link is not encrypted (http)', 1, 'Scheme is http');
+    for (const b in BRANDS) {
+      const real = BRANDS[b];
+      if (h.includes(b) && h !== real && !h.endsWith('.' + real)) { add('brand', 'Brand name appears in an unrelated domain', 3, '"' + b + '" in ' + h + ' (official domain not matched)'); break; }
+    }
+    return { url: raw, valid: true, host: h, flags: out };
+  }
+  function level(score, words, nUrls, hasSignals) {
+    if (score >= 5) return 'High';
+    if (score >= 2) return 'Medium';
+    if (!hasSignals && words < 5 && nUrls === 0) return 'Inconclusive';
+    return 'Low';
+  }
+  function advice(lvl, interacted) {
+    const r = [];
+    if (lvl === 'High') r.push('Do not click links, reply, or share codes. Delete or report the message.');
+    if (lvl === 'Medium') r.push('Treat this with caution. Do not act on it until you verify the sender another way.');
+    if (lvl === 'Low') r.push('No strong warning signs were found, but this does not prove it is safe. Verify unexpected requests.');
+    if (lvl === 'Inconclusive') r.push('There is too little information to judge. Add the full message or link if you can.');
+    r.push('Verify the sender using a phone number or website you found yourself, not one from the message.');
+    r.push('Never share OTPs, PINs or passwords with anyone who contacts you.');
+    if (interacted) r.push('Since you already interacted: change affected passwords, contact your bank immediately if money or card details were involved, and report at the official national cybercrime portal (verify the current link and helpline before use).');
+    return r;
+  }
+  // Orchestrator. hooks.onStage(i, status) lets a UI show real progress.
+  async function investigate(req, hooks) {
+    hooks = hooks || {}; const ev = []; const log = (stage, status, detail, tool) => { ev.push({ stage, status, detail, tool: tool || null, at: now() }); hooks.onStage && hooks.onStage(stage, status); };
+    const tick = hooks.delay ? () => new Promise(r => setTimeout(r, hooks.delay)) : () => 0;
+    const err = validate(req.inputType, req.content);
+    if (err) { const e = new Error(err); e.code = 'INVALID_INPUT'; throw e; }
+    const content = req.content.trim();
+    log('Input received', 'done', req.inputType + ', ' + content.length + ' characters'); await tick();
+    const t = triage(req.inputType, content);
+    log('Triage completed', 'done', t.findings.length + ' text indicator(s), ' + t.urls.length + ' link(s) found', 'triage.patterns'); await tick();
+    const plan = ['Text pattern check' + (req.inputType === 'url' ? ' (skipped: URL-only input)' : '')];
+    if (t.urls.length) plan.push('URL structure check'); plan.push('External reputation check');
+    log('Checks selected', 'done', plan.join('; '), 'planner'); await tick();
+    const checks = [{ name: 'Text pattern check', status: req.inputType === 'url' ? 'skipped' : 'completed', source: 'local rules', limitation: 'Keyword rules can miss novel wording and flag legitimate messages.' }];
+    const urlRes = t.urls.map(checkUrl);
+    if (t.urls.length) checks.push({ name: 'URL structure check', status: 'completed', source: 'local rules (URL never visited)', limitation: 'Structure only; says nothing about page content.' });
+    checks.push({ name: 'External URL reputation', status: 'unavailable', source: 'none configured', limitation: 'No reputation service or API key is connected, so no reputation result exists.' });
+    log('Tools executed', 'done', 'Ran ' + checks.filter(c => c.status === 'completed').length + ' local check(s); reputation check unavailable', 'engine.checkUrl'); await tick();
+    const findings = t.findings.concat(...urlRes.map(r => r.flags));
+    const score = findings.reduce((a, f) => a + f.points, 0);
+    log('Evidence consolidated', 'done', findings.length + ' finding(s)'); await tick();
+    const lvl = level(score, t.words, t.urls.length, findings.length > 0);
+    log('Risk assessment generated', 'done', lvl + ' (rule points: ' + score + ')', 'risk.rules'); await tick();
+    const recs = advice(lvl, !!req.interacted);
+    log('Safety advice prepared', 'done', recs.length + ' recommendation(s)', 'advisor.rules');
+    const bad = urlRes.filter(r => !r.valid).length;
+    return {
+      investigationId: 'SS-' + Date.now().toString(36).toUpperCase(), status: 'completed', mode: 'local-rule-engine', inputType: req.inputType,
+      riskLevel: lvl, score, createdAt: now(),
+      summary: lvl === 'Inconclusive' ? 'Not enough information to assess.' : findings.length ? findings.length + ' warning sign(s) observed; assessed as ' + lvl + ' risk by documented rules.' : 'No warning signs matched the implemented rules.',
+      findings, checks, agentEvents: ev, recommendations: recs,
+      limitations: ['Rule-based only: no AI model and no external reputation service are connected.', '"Low" does not prove safety.', 'Score = sum of rule points (High ≥5, Medium 2–4, Low <2). It is not a probability of fraud.'].concat(bad ? [bad + ' link(s) could not be parsed.'] : [])
+    };
+  }
+  const api = { investigate, validate, LIMIT };
+  if (typeof module !== 'undefined') module.exports = api; else root.SSEngine = api;
+})(typeof self !== 'undefined' ? self : this);
+
+</script>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const LOGO='<svg width="34" height="34" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#22d3ee"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs><path d="M16 2l11 4v8c0 7-4.6 12.4-11 15C9.600 26.400 5 21 5 14V6z" fill="none" stroke="url(#lg)" stroke-width="2"/><path d="M11 15h4l2-3 2 5h2M16 9v3" fill="none" stroke="url(#lg)" stroke-width="1.600" stroke-linecap="round"/><circle cx="21" cy="17" r="1.200" fill="#22d3ee"/></svg>';
+const NAV=[['overview','Overview','◈'],['scan','New Investigation','⌕'],['history','Investigation History','☰'],['how','How It Works','⇢'],['safety','Safety Centre','✚'],['settings','Settings','⚙']];
+const TIPS=['Real banks and agencies never ask for your OTP, PIN or CVV.','Verify unexpected requests using a number or site you found yourself.','Urgency is a pressure tactic. Take a minute before you act.','You never need to pay a fee to receive a prize or a job offer.'];
+const SAMPLES=[{investigationId:'SAMPLE-1',inputType:'sms',riskLevel:'High',summary:'Sample: OTP request with urgency',createdAt:'2026-01-01T10:00:00Z',sample:1},{investigationId:'SAMPLE-2',inputType:'url',riskLevel:'Medium',summary:'Sample: shortened link',createdAt:'2026-01-01T09:00:00Z',sample:1}];
+const EXAMPLES={sms:'URGENT: Your bank account will be blocked. Share the OTP sent to you immediately to verify KYC: http://bit.ly/kyc-now',email:'Subject: You won!\nCongratulations, you have won a prize. Pay a small processing fee to claim your reward within 24 hours.',url:'http://sbi-secure-login.xyz/kyc'};
+let S={tab:'sms',text:'',interacted:false,run:null,backend:null,hist:[]};
+const st={get(){try{return JSON.parse(localStorage.getItem('ss_hist')||'[]')}catch(e){return[]}},set(h){try{localStorage.setItem('ss_hist',JSON.stringify(h))}catch(e){}}};
+const prefs={get(k){try{return localStorage.getItem('ss_'+k)}catch(e){return null}},set(k,v){try{localStorage.setItem('ss_'+k,v)}catch(e){}}};
+if(prefs.get('calm')==='1')document.body.classList.add('calm');if(prefs.get('theme'))document.documentElement.dataset.theme=prefs.get('theme');
+const fmt=d=>new Date(d).toLocaleString();
+function nav(){const r=(location.hash||'#overview').slice(1).split('/')[0];$('.side').innerHTML='<div class="logo">'+LOGO+'<div>ScamShield AI<small>Detect. Understand. Stay Protected.</small></div></div><a class="btn newscan" href="#scan" style="text-align:center;text-decoration:none;margin-bottom:8px">＋ New Scan</a>'+NAV.map(n=>'<a class="nav'+(n[0]===r?' on':'')+'" href="#'+n[0]+'"'+(n[0]===r?' aria-current="page"':'')+'><span aria-hidden="true">'+n[2]+'</span>'+n[1]+'</a>').join('');return r}
+const foot='<footer>ScamShield AI · v0.2.0 · Team CyberSentinels · Hackathon prototype. If the server-side LLM context agent is explicitly enabled, submitted message text is sent to the configured provider. ScamShield provides guidance only and cannot guarantee protection from scams.</footer>';
+const pill=l=>'<span class="pill '+l+'">'+l+'</span>';
+async function detect(){try{const r=await fetch('/api/health',{signal:AbortSignal.timeout(1500)});S.backend=r.ok?await r.json():false}catch(e){S.backend=false}}
+function overview(){const h=S.hist.length?S.hist.slice(0,4):SAMPLES;
+return '<div class="mob">'+LOGO+'<b>ScamShield AI</b></div><h1>Your digital safety starts here.</h1><p class="mut">Investigate suspicious messages, emails and links with an explainable, step-by-step workflow.</p>'+
+'<div class="card"><h3>New Investigation</h3><textarea id="q" aria-label="Message or URL to investigate" placeholder="Paste a suspicious message or link…"></textarea><div class="row" style="margin-top:10px"><button class="btn" id="go">Investigate</button><span class="sm mut">Text is treated as untrusted and never opened as a link.</span></div></div>'+
+'<h2>What it does</h2><div class="grid">'+[['Detect warning signs','Finds urgency, OTP requests, fee demands and look-alike links.'],['Investigate evidence','Runs the checks that are available and shows which were not.'],['Understand your risk','A plain-language report with next steps and stated limits.']].map(c=>'<div class="card"><h3>'+c[0]+'</h3><p class="mut sm" style="margin:0">'+c[1]+'</p></div>').join('')+'</div>'+
+'<h2>Workflow</h2><div class="flow">'+['Submission','Triage','Plan','Evidence','Risk','Advice'].map(x=>'<span class="n">'+x+'</span>').join('→')+'</div>'+
+'<h2>Recent investigations '+(S.hist.length?'':'<span class="tag">Sample investigation</span>')+'</h2><div class="card">'+h.map(x=>'<div class="row" style="justify-content:space-between;padding:6px 0">'+'<span>'+pill(x.riskLevel)+' '+esc(x.summary)+(x.sample?' <span class="tag">Demo data</span>':'')+'</span><span class="mut sm">'+fmt(x.createdAt)+'</span></div>').join('')+'</div>'+
+'<h2>Safety tip</h2><div class="note">'+TIPS[new Date().getDate()%TIPS.length]+'</div><h2>Privacy</h2><div class="note">Without an enabled server-side LLM, analysis uses local rules. If the server-side LLM context agent is explicitly enabled, submitted message text is sent to the configured provider. Reports saved to history exclude your raw message and are stored only on this device.</div>'+foot}
+function scan(){const u=S.tab==='url';
+return '<h1>New Investigation</h1><div class="tabs" role="tablist">'+[['sms','SMS / Message'],['email','Email'],['url','URL']].map(t=>'<button class="tab" role="tab" data-t="'+t[0]+'" aria-selected="'+(S.tab===t[0])+'">'+t[1]+'</button>').join('')+'</div>'+
+'<div class="card"><label for="q" class="sm mut">'+(u?'URL to check (it will not be opened)':'Paste the '+(S.tab==='sms'?'message':'email')+' text')+'</label>'+(u?'<input type="text" id="q" autocomplete="off" placeholder="https://example.com/path">':'<textarea id="q" maxlength="5000"></textarea>')+
+'<div class="row" style="justify-content:space-between;margin:8px 0"><span class="sm mut" id="cc">0 / 5000</span><label class="sm"><input type="checkbox" id="int"> I already clicked or replied</label></div><div id="err" class="sm" style="color:var(--r)" role="alert"></div>'+
+'<div class="row"><button class="btn" id="go">Investigate</button><button class="btn ghost" id="ex">Load example</button><button class="btn ghost" id="clr">Clear</button></div></div><div class="note" style="margin-top:12px">Examples are illustrative text, not real submissions. Nothing is sent anywhere unless you connect your own backend.</div><div id="out"></div>'+foot}
+const STAGES=['Input received','Triage completed','Checks selected','Tools executed','Evidence consolidated','Risk assessment generated','Safety advice prepared'];
+function progress(done){return '<div class="card scan" style="margin-top:14px" aria-live="polite"><h3>Investigating</h3><div class="bar"><i style="width:'+Math.round(done/STAGES.length*100)+'%"></i></div><div class="tl" style="margin-top:14px">'+STAGES.map((s,i)=>'<div class="'+(i<done?'done':i===done?'run':'')+'">'+s+'</div>').join('')+'</div></div>'}
+function report(r){const dem=r.mode==='local-rule-engine';
+return '<div class="card" style="margin-top:14px"><div class="row" style="justify-content:space-between"><div>'+pill(r.riskLevel)+' <b>'+esc(r.summary)+'</b></div><span class="mut sm">'+esc(r.investigationId)+' · '+fmt(r.createdAt)+'</span></div>'+
+'<p class="sm mut">Engine: '+(dem?'local rule-based (no AI model connected). Not an AI analysis.':esc(r.mode))+' · Rule points: '+r.score+' (not a fraud probability)</p>'+
+'<h3>Warning signs</h3>'+(r.findings.length?r.findings.map(f=>'<details open><summary>'+esc(f.label)+' <span class="tag">observed</span></summary><div class="sm mut">'+esc(f.evidence)+'</div></details>').join(''):'<p class="sm mut">None matched the implemented rules.</p>')+
+'<h3 style="margin-top:14px">Checks</h3>'+r.checks.map(c=>'<div class="sm" style="padding:4px 0"><b>'+esc(c.name)+'</b> — '+esc(c.status)+' <span class="mut">('+esc(c.source)+'). '+esc(c.limitation)+'</span></div>').join('')+
+'<h3 style="margin-top:14px">What to do</h3><ul>'+r.recommendations.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul><h3>Limitations</h3><ul class="sm mut">'+r.limitations.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>'+
+'<details><summary>Technical timeline</summary><div class="tl" style="margin-top:10px">'+r.agentEvents.map(e=>'<div class="done"><b>'+esc(e.stage)+'</b> <span class="mut sm">'+fmt(e.at)+(e.tool?' · '+esc(e.tool):'')+'</span><div class="sm mut">'+esc(e.detail)+'</div></div>').join('')+'</div></details>'+
+'<div class="row" style="margin-top:12px"><button class="btn ghost sm" id="again">Start another</button></div></div>'}
+async function runScan(text,type,inter){const out=$('#out'),go=$('#go'),err=$('#err');if(err)err.textContent='';
+const bad=SSEngine.validate(type,text);if(bad){if(err)err.textContent=bad;else location.hash='#scan';return bad}
+go.disabled=true;go.textContent='Investigating…';out&&(out.innerHTML=progress(0));
+try{let r;if(S.backend){const x=await fetch('/api/investigations',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({inputType:type,content:text,interacted:inter})});if(!x.ok)throw new Error((await x.json()).error||'Backend error');r=await x.json();}
+else r=await SSEngine.investigate({inputType:type,content:text,interacted:inter},{delay:prefs.get('calm')==='1'?0:380,onStage:(s,k)=>{const i=STAGES.indexOf(s)+1;out&&(out.innerHTML=progress(i))}});
+const keep=prefs.get('save')!=='0';if(keep){const {...rest}=r;S.hist=[rest,...S.hist].slice(0,50);st.set(S.hist)}
+out.innerHTML=report(r);$('#again').onclick=()=>{S.text='';render()};}catch(e){out.innerHTML='<div class="card" style="margin-top:14px;color:var(--r)" role="alert">Investigation failed: '+esc(e.message)+'. No result was produced.</div>'}
+go.disabled=false;go.textContent='Investigate'}
+function history(id){if(id){const r=S.hist.find(x=>x.investigationId===id);return '<a href="#history">← Back</a><div id="out">'+(r?report(r).replace('id="again"','hidden'):'<p>Not found.</p>')+'</div>'}
+return '<h1>Investigation History</h1><div class="row"><input type="search" id="hs" aria-label="Search" placeholder="Search summaries…" style="flex:2;min-width:160px"><select id="hl" aria-label="Risk"><option value="">All risk</option><option>High</option><option>Medium</option><option>Low</option><option>Inconclusive</option></select><select id="ht" aria-label="Type"><option value="">All types</option><option value="sms">SMS</option><option value="email">Email</option><option value="url">URL</option></select><select id="ho" aria-label="Sort"><option value="d">Newest</option><option value="a">Oldest</option></select></div><div id="hlist" style="margin-top:14px"></div><p class="note">Stored in this browser only, without raw message text. Clear anytime in Settings.</p>'+foot}
+function hlist(){const q=$('#hs').value.toLowerCase(),l=$('#hl').value,t=$('#ht').value,o=$('#ho').value;let a=S.hist.filter(x=>(!q||x.summary.toLowerCase().includes(q))&&(!l||x.riskLevel===l)&&(!t||x.inputType===t));a.sort((x,y)=>o==='a'?x.createdAt.localeCompare(y.createdAt):y.createdAt.localeCompare(x.createdAt));
+$('#hlist').innerHTML=a.length?a.map(x=>'<div class="card row" style="justify-content:space-between;margin-bottom:8px"><span>'+pill(x.riskLevel)+' '+esc(x.inputType.toUpperCase())+' · '+esc(x.summary)+'<br><span class="mut sm">'+fmt(x.createdAt)+'</span></span><span class="row"><a class="btn ghost sm" href="#history/'+esc(x.investigationId)+'" style="text-decoration:none">View</a><button class="btn ghost sm" data-d="'+esc(x.investigationId)+'">Delete</button></span></div>').join(''):'<div class="card mut">'+(S.hist.length?'No matches.':'No saved investigations yet. Run one from New Investigation.')+'</div>';
+document.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{S.hist=S.hist.filter(x=>x.investigationId!==b.dataset.d);st.set(S.hist);hlist()})}
+function how(){const done=[['Rule-based triage and URL structure checks','Implemented'],['Orchestrator with logged stage events','Implemented'],['Node backend endpoint (server.js)','Implemented, optional'],['LLM context agent',S.backend&&S.backend.llmConfigured?'Configured (opt-in enabled)':'Not configured / opt-in disabled'],['External URL reputation service','Not connected']];
+return '<h1>How It Works</h1><div class="flow">'+['Submission','Triage','Investigation plan','Evidence tools','Risk analysis','Safety advice'].map(x=>'<span class="n">'+x+'</span>').join('→')+'</div><div class="grid" style="margin-top:14px">'+[['Triage','Extracts suspicious phrases and links.'],['Planner','Selects checks; skips irrelevant ones; records unavailable ones.'],['Evidence','Runs local checks; URLs are never visited.'],['Risk analyst','Sums documented rule points into Low / Medium / High / Inconclusive.'],['Safety advisor','Gives next steps from the risk level.']].map(c=>'<div class="card"><h3>'+c[0]+'</h3><p class="mut sm" style="margin:0">'+c[1]+'</p></div>').join('')+'</div><h2>Status</h2><div class="card">'+done.map(d=>'<div class="row" style="justify-content:space-between;padding:4px 0"><span>'+d[0]+'</span><span class="tag">'+d[1]+'</span></div>').join('')+'</div><h2>Architecture</h2><div class="card"><div class="flow"><span class="n">Browser UI</span>→<span class="n">POST /api/investigations</span>→<span class="n">Orchestrator (engine.js)</span>→<span class="n">Tools</span></div><p class="sm mut">Without a backend the same engine runs in the browser. See ARCHITECTURE.md.</p></div>'+foot}
+function safety(){const T=[['Phishing and impersonation','Scammers imitate banks, couriers and officials. Check the sender through a channel you found yourself.'],['OTP and password safety','No genuine organisation asks for your OTP, PIN or password.'],['Fake job and internship offers','Be wary of fees, instant selection, or chat-app-only interviews.'],['Fake parcel / delivery fees','Small “redelivery fees” via links are a common trick. Use the courier’s official app.'],['Payment scams and urgency','Pressure to pay now is a red flag. Pause and verify.'],['After clicking a suspicious link','Do not enter details, close the page, run a device scan, change passwords if you typed any.'],['After sharing credentials or paying','Change passwords, call your bank at once to block cards or UPI, keep screenshots, and report it.']];
+return '<h1>Safety Centre</h1>'+T.map(t=>'<details><summary>'+t[0]+'</summary><p class="sm mut">'+t[1]+'</p></details>').join('')+'<h2>Reporting in India</h2><div class="note">The national cybercrime reporting portal is cybercrime.gov.in and the national helpline is 1930. These were not re-verified during this build, so please confirm the current details on the official government site before relying on them.</div>'+foot}
+function settings(){return '<h1>Settings</h1><div class="card"><h3>Appearance</h3><div class="row"><select id="th" aria-label="Theme"><option value="">System</option><option value="dark">Dark</option><option value="light">Light</option></select><label><input type="checkbox" id="cm"> Reduce motion</label><label><input type="checkbox" id="sv"> Save reports to history</label></div></div>'+
+'<div class="card" style="margin-top:12px"><h3>Connection status</h3><p class="sm">Backend: <b>'+(S.backend?'connected (multi-stage engine)':'not connected — using in-browser engine')+'</b><br>AI model: <b>'+(S.backend&&S.backend.llmConfigured?'configured (opt-in enabled)':'not configured / opt-in disabled')+'</b><br>URL reputation service: <b>not configured</b></p></div>'+
+'<div class="card" style="margin-top:12px"><h3>Data</h3><p class="sm mut">History holds reports without raw message text, kept in this browser until you delete it.</p><button class="btn ghost" id="ch">Clear history</button></div><div class="note" style="margin-top:12px">ScamShield is guidance only. It cannot guarantee that anything is safe or fraudulent.</div>'+foot}
+function render(){const r=nav();const id=(location.hash.split('/')[1]);const v=$('#v');
+v.innerHTML={overview,scan,history:()=>history(id),how,safety,settings}[r]?.()||overview();window.scrollTo(0,0);
+const q=$('#q');if(q){q.value=S.text||'';q.oninput=()=>{S.text=q.value;const c=$('#cc');c&&(c.textContent=q.value.length+' / 5000')};q.oninput&&q.oninput()}
+const go=$('#go');if(go)go.onclick=()=>{if(r==='overview'){S.tab=/^\s*(https?:\/\/|www\.)\S+\s*$/i.test(S.text)?'url':'sms';location.hash='#scan';setTimeout(()=>runScan(S.text,S.tab,false),50)}else runScan(S.text,S.tab,$('#int').checked)};
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{S.tab=t.dataset.t;S.text='';render()});
+$('#ex')&&($('#ex').onclick=()=>{S.text=EXAMPLES[S.tab];render()});$('#clr')&&($('#clr').onclick=()=>{S.text='';render()});
+if(r==='history'&&!id){['hs','hl','ht','ho'].forEach(i=>$('#'+i).oninput=hlist);hlist()}
+if(r==='settings'){$('#th').value=prefs.get('theme')||'';$('#th').onchange=e=>{prefs.set('theme',e.target.value);e.target.value?document.documentElement.dataset.theme=e.target.value:delete document.documentElement.dataset.theme};$('#cm').checked=prefs.get('calm')==='1';$('#cm').onchange=e=>{prefs.set('calm',e.target.checked?'1':'0');document.body.classList.toggle('calm',e.target.checked)};$('#sv').checked=prefs.get('save')!=='0';$('#sv').onchange=e=>prefs.set('save',e.target.checked?'1':'0');$('#ch').onclick=()=>{S.hist=[];st.set([]);$('#ch').textContent='History cleared'}}}
+S.hist=st.get();addEventListener('hashchange',render);detect().then(render);render();
+</script></body></html>
